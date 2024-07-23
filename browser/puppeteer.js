@@ -33,7 +33,9 @@ export default function startPuppeteer({
     const browser = await puppeteer.launch({
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
       headless: 'new',
-      protocolTimeout: TWENTY_DAYS,
+      protocolTimeout: process.env.PUPPETEER_PROTOCOL_TIMEOUT === undefined
+        ? TWENTY_DAYS
+        : Number.parseInt(process.env.PUPPETEER_PROTOCOL_TIMEOUT, 10),
     });
     console.log(await browser.version());
     const page = await browser.newPage();
